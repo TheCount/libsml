@@ -17,8 +17,8 @@
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
 
-#ifndef _SML_LIST_H_
-#define	_SML_LIST_H_
+#ifndef SML_LIST_H__
+#define	SML_LIST_H__
 
 #include "sml_time.h"
 #include "sml_octet_string.h"
@@ -66,5 +66,5 @@ void sml_list_free(sml_list *list);
 #endif
 
 
-#endif /* _SML_LIST_H_ */
+#endif /* SML_LIST_H__ */
 
