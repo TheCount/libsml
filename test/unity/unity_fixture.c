@@ -19,7 +19,7 @@ int verbose = 0;
 void setUp(void)    { /*does nothing*/ }
 void tearDown(void) { /*does nothing*/ }
 
-void announceTestRun(int runNumber)
+void announceTestRun(unsigned int runNumber)
 {
     UnityPrint("Unity test run ");
     UnityPrintNumber(runNumber+1);
@@ -31,7 +31,7 @@ void announceTestRun(int runNumber)
 int UnityMain(int argc, char* argv[], void (*runAllTests)())
 {
     int result = UnityGetCommandLineOptions(argc, argv);
-    int r;
+    unsigned int r;
     if (result != 0)
         return result;
 
@@ -107,13 +107,16 @@ void UnityTestRunner(unityfunction* setup,
             UnityPointer_UndoAllSets();
             if (!Unity.CurrentTestFailed)
                 UnityMalloc_EndTest();
-            UnityConcludeFixtureTest();
         }
-        else
-        {
-            //aborting - jwg - di i need these for the other TEST_PROTECTS?
-        }
+        UnityConcludeFixtureTest();
     }
+}
+
+void UnityIgnoreTest()
+{
+    Unity.NumberOfTests++;
+    Unity.CurrentTestIgnored = 1;
+    UNITY_OUTPUT_CHAR('!');
 }
 
 
@@ -247,7 +250,7 @@ void* unity_realloc(void * oldMem, size_t size)
         return oldMem;
 
     newMem = unity_malloc(size);
-    memcpy(newMem, oldMem, size);
+    memcpy(newMem, oldMem, guard->size);
     unity_free(oldMem);
     return newMem;
 }
@@ -255,9 +258,9 @@ void* unity_realloc(void * oldMem, size_t size)
 
 //--------------------------------------------------------
 //Automatic pointer restoration functions
-typedef struct _PointerPair
+typedef struct PointerPair
 {
-    struct _PointerPair * next;
+    struct PointerPair * next;
     void ** pointer;
     void * old_value;
 } PointerPair;
@@ -371,3 +374,4 @@ void UnityConcludeFixtureTest()
     Unity.CurrentTestFailed = 0;
     Unity.CurrentTestIgnored = 0;
 }
+
