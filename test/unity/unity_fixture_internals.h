@@ -8,7 +8,7 @@
 #ifndef UNITY_FIXTURE_INTERNALS_H_
 #define UNITY_FIXTURE_INTERNALS_H_
 
-typedef struct
+typedef struct _UNITY_FIXTURE_T
 {
     int Verbose;
     unsigned int RepeatCount;
@@ -25,7 +25,7 @@ void UnityTestRunner(unityfunction * setup,
         const char * name,
         const char * file, int line);
 
-void UnityIgnoreTest();
+void UnityIgnoreTest(const char * printableName);
 void UnityMalloc_StartTest();
 void UnityMalloc_EndTest();
 int UnityFailureCount();

@@ -14,10 +14,13 @@
 //-------------------------------------------------------
 // Configuration Options
 //-------------------------------------------------------
+// All options described below should be passed as a compiler flag to all files using Unity. If you must add #defines, place them BEFORE the #include above.
 
-// Integers
-//     - Unity assumes 32 bit integers by default
-//     - If your compiler treats ints of a different size, define UNITY_INT_WIDTH
+// Integers/longs/pointers
+//     - Unity assumes 32 bit integers, longs, and pointers by default
+//     - If your compiler treats ints of a different size, options are:
+//       - define UNITY_USE_LIMITS_H to use limits.h to determine sizes
+//       - define UNITY_INT_WIDTH, UNITY_LONG_WIDTH, nand UNITY_POINTER_WIDTH
 
 // Floats
 //     - define UNITY_EXCLUDE_FLOAT to disallow floating point comparisons
@@ -99,10 +102,10 @@
 #define TEST_ASSERT_EQUAL_HEX32(expected, actual)                                                  UNITY_TEST_ASSERT_EQUAL_HEX32((expected), (actual), __LINE__, NULL)
 #define TEST_ASSERT_EQUAL_HEX64(expected, actual)                                                  UNITY_TEST_ASSERT_EQUAL_HEX64((expected), (actual), __LINE__, NULL)
 #define TEST_ASSERT_BITS(mask, expected, actual)                                                   UNITY_TEST_ASSERT_BITS((mask), (expected), (actual), __LINE__, NULL)
-#define TEST_ASSERT_BITS_HIGH(mask, actual)                                                        UNITY_TEST_ASSERT_BITS((mask), (UU32)(-1), (actual), __LINE__, NULL)
-#define TEST_ASSERT_BITS_LOW(mask, actual)                                                         UNITY_TEST_ASSERT_BITS((mask), (UU32)(0), (actual), __LINE__, NULL)
-#define TEST_ASSERT_BIT_HIGH(bit, actual)                                                          UNITY_TEST_ASSERT_BITS(((UU32)1 << bit), (UU32)(-1), (actual), __LINE__, NULL)
-#define TEST_ASSERT_BIT_LOW(bit, actual)                                                           UNITY_TEST_ASSERT_BITS(((UU32)1 << bit), (UU32)(0), (actual), __LINE__, NULL)
+#define TEST_ASSERT_BITS_HIGH(mask, actual)                                                        UNITY_TEST_ASSERT_BITS((mask), (_UU32)(-1), (actual), __LINE__, NULL)
+#define TEST_ASSERT_BITS_LOW(mask, actual)                                                         UNITY_TEST_ASSERT_BITS((mask), (_UU32)(0), (actual), __LINE__, NULL)
+#define TEST_ASSERT_BIT_HIGH(bit, actual)                                                          UNITY_TEST_ASSERT_BITS(((_UU32)1 << bit), (_UU32)(-1), (actual), __LINE__, NULL)
+#define TEST_ASSERT_BIT_LOW(bit, actual)                                                           UNITY_TEST_ASSERT_BITS(((_UU32)1 << bit), (_UU32)(0), (actual), __LINE__, NULL)
 
 //Integer Ranges (of all sizes)
 #define TEST_ASSERT_INT_WITHIN(delta, expected, actual)                                            UNITY_TEST_ASSERT_INT_WITHIN(delta, expected, actual, __LINE__, NULL)
@@ -185,10 +188,10 @@
 #define TEST_ASSERT_EQUAL_HEX32_MESSAGE(expected, actual, message)                                 UNITY_TEST_ASSERT_EQUAL_HEX32((expected), (actual), __LINE__, message)
 #define TEST_ASSERT_EQUAL_HEX64_MESSAGE(expected, actual, message)                                 UNITY_TEST_ASSERT_EQUAL_HEX64((expected), (actual), __LINE__, message)
 #define TEST_ASSERT_BITS_MESSAGE(mask, expected, actual, message)                                  UNITY_TEST_ASSERT_BITS((mask), (expected), (actual), __LINE__, message)
-#define TEST_ASSERT_BITS_HIGH_MESSAGE(mask, actual, message)                                       UNITY_TEST_ASSERT_BITS((mask), (UU32)(-1), (actual), __LINE__, message)
-#define TEST_ASSERT_BITS_LOW_MESSAGE(mask, actual, message)                                        UNITY_TEST_ASSERT_BITS((mask), (UU32)(0), (actual), __LINE__, message)
-#define TEST_ASSERT_BIT_HIGH_MESSAGE(bit, actual, message)                                         UNITY_TEST_ASSERT_BITS(((UU32)1 << bit), (UU32)(-1), (actual), __LINE__, message)
-#define TEST_ASSERT_BIT_LOW_MESSAGE(bit, actual, message)                                          UNITY_TEST_ASSERT_BITS(((UU32)1 << bit), (UU32)(0), (actual), __LINE__, message)
+#define TEST_ASSERT_BITS_HIGH_MESSAGE(mask, actual, message)                                       UNITY_TEST_ASSERT_BITS((mask), (_UU32)(-1), (actual), __LINE__, message)
+#define TEST_ASSERT_BITS_LOW_MESSAGE(mask, actual, message)                                        UNITY_TEST_ASSERT_BITS((mask), (_UU32)(0), (actual), __LINE__, message)
+#define TEST_ASSERT_BIT_HIGH_MESSAGE(bit, actual, message)                                         UNITY_TEST_ASSERT_BITS(((_UU32)1 << bit), (_UU32)(-1), (actual), __LINE__, message)
+#define TEST_ASSERT_BIT_LOW_MESSAGE(bit, actual, message)                                          UNITY_TEST_ASSERT_BITS(((_UU32)1 << bit), (_UU32)(0), (actual), __LINE__, message)
 
 //Integer Ranges (of all sizes)
 #define TEST_ASSERT_INT_WITHIN_MESSAGE(delta, expected, actual, message)                           UNITY_TEST_ASSERT_INT_WITHIN(delta, expected, actual, __LINE__, message)

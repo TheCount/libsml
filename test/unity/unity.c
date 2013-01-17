@@ -14,16 +14,7 @@
 #define UNITY_SKIP_EXECUTION  { if ((Unity.CurrentTestFailed != 0) || (Unity.CurrentTestIgnored != 0)) {return;} }
 #define UNITY_PRINT_EOL       { UNITY_OUTPUT_CHAR('\n'); }
 
-struct Unity Unity = {
-	.TestFile = NULL,
-	.CurrentTestName = NULL,
-	.CurrentTestLineNumber = 0,
-	.NumberOfTests = 0,
-	.TestFailures = 0,
-	.TestIgnores = 0,
-	.CurrentTestFailed = 0,
-	.CurrentTestIgnored = 0
-};
+struct _Unity Unity = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , { 0 } };
 
 const char* UnityStrNull     = "NULL";
 const char* UnityStrSpacer   = ". ";
@@ -43,13 +34,13 @@ const char* UnityStrNaN      = "NaN";
 
 // Dividing by these constants produces +/- infinity.
 // The rationale is given in UnityAssertFloatIsInf's body.
-static const UF f_zero = 0.0f;
+static const _UF f_zero = 0.0f;
 #ifndef UNITY_EXCLUDE_DOUBLE
-static const UD d_zero = 0.0;
+static const _UD d_zero = 0.0;
 #endif
 
 // compiler-generic print formatting masks
-const U_UINT UnitySizeMask[] = 
+const _U_UINT UnitySizeMask[] = 
 {
     255u,         // 0xFF
     65535u,       // 0xFFFF
@@ -99,7 +90,7 @@ void UnityPrint(const char* string)
             else
             {
                 UNITY_OUTPUT_CHAR('\\');
-                UnityPrintNumberHex((U_SINT)*pch, 2);
+                UnityPrintNumberHex((_U_SINT)*pch, 2);
             }
             pch++;
         }
@@ -107,7 +98,7 @@ void UnityPrint(const char* string)
 }
 
 //-----------------------------------------------
-void UnityPrintNumberByStyle(const U_SINT number, const UNITY_DISPLAY_STYLE_T style)
+void UnityPrintNumberByStyle(const _U_SINT number, const UNITY_DISPLAY_STYLE_T style)
 {
     if ((style & UNITY_DISPLAY_RANGE_INT) == UNITY_DISPLAY_RANGE_INT)
     {
@@ -115,21 +106,21 @@ void UnityPrintNumberByStyle(const U_SINT number, const UNITY_DISPLAY_STYLE_T st
     }
     else if ((style & UNITY_DISPLAY_RANGE_UINT) == UNITY_DISPLAY_RANGE_UINT)
     {
-        UnityPrintNumberUnsigned(  (U_UINT)number  &  UnitySizeMask[((U_UINT)style & (U_UINT)0x0F) - 1]  );
+        UnityPrintNumberUnsigned(  (_U_UINT)number  &  UnitySizeMask[((_U_UINT)style & (_U_UINT)0x0F) - 1]  );
     }
     else
     {
-        UnityPrintNumberHex((U_UINT)number, (style & 0x000F) << 1);
+        UnityPrintNumberHex((_U_UINT)number, (style & 0x000F) << 1);
     }
 }
 
 //-----------------------------------------------
 /// basically do an itoa using as little ram as possible
-void UnityPrintNumber(const U_SINT number_to_print)
+void UnityPrintNumber(const _U_SINT number_to_print)
 {
-    U_SINT divisor = 1;
-    U_SINT next_divisor;
-    U_SINT number = number_to_print;
+    _U_SINT divisor = 1;
+    _U_SINT next_divisor;
+    _U_SINT number = number_to_print;
 
     if (number < 0)
     {
@@ -158,10 +149,10 @@ void UnityPrintNumber(const U_SINT number_to_print)
 
 //-----------------------------------------------
 /// basically do an itoa using as little ram as possible
-void UnityPrintNumberUnsigned(const U_UINT number)
+void UnityPrintNumberUnsigned(const _U_UINT number)
 {
-    U_UINT divisor = 1;
-    U_UINT next_divisor;
+    _U_UINT divisor = 1;
+    _U_UINT next_divisor;
 
     // figure out initial divisor
     while (number / divisor > 9)
@@ -183,9 +174,9 @@ void UnityPrintNumberUnsigned(const U_UINT number)
 }
 
 //-----------------------------------------------
-void UnityPrintNumberHex(const U_UINT number, const char nibbles_to_print)
+void UnityPrintNumberHex(const _U_UINT number, const char nibbles_to_print)
 {
-    U_UINT nibble;
+    _U_UINT nibble;
     char nibbles = nibbles_to_print;
     UNITY_OUTPUT_CHAR('0');
     UNITY_OUTPUT_CHAR('x');
@@ -205,10 +196,10 @@ void UnityPrintNumberHex(const U_UINT number, const char nibbles_to_print)
 }
 
 //-----------------------------------------------
-void UnityPrintMask(const U_UINT mask, const U_UINT number)
+void UnityPrintMask(const _U_UINT mask, const _U_UINT number)
 {
-    U_UINT current_bit = (U_UINT)1 << (UNITY_INT_WIDTH - 1);
-    US32 i;
+    _U_UINT current_bit = (_U_UINT)1 << (UNITY_INT_WIDTH - 1);
+    _US32 i;
 
     for (i = 0; i < UNITY_INT_WIDTH; i++)
     {
@@ -233,7 +224,7 @@ void UnityPrintMask(const U_UINT mask, const U_UINT number)
 
 //-----------------------------------------------
 #ifdef UNITY_FLOAT_VERBOSE
-void UnityPrintFloat(UF number)
+void UnityPrintFloat(_UF number)
 {
     char TempBuffer[32];
     sprintf(TempBuffer, "%.6f", number);
@@ -366,9 +357,9 @@ int UnityCheckArraysForNull(const void* expected, const void* actual, const UNIT
 // Assertion Functions
 //-----------------------------------------------
 
-void UnityAssertBits(const U_SINT mask,
-                     const U_SINT expected,
-                     const U_SINT actual,
+void UnityAssertBits(const _U_SINT mask,
+                     const _U_SINT expected,
+                     const _U_SINT actual,
                      const char* msg,
                      const UNITY_LINE_TYPE lineNumber)
 {
@@ -387,8 +378,8 @@ void UnityAssertBits(const U_SINT mask,
 }
 
 //-----------------------------------------------
-void UnityAssertEqualNumber(const U_SINT expected,
-                            const U_SINT actual,
+void UnityAssertEqualNumber(const _U_SINT expected,
+                            const _U_SINT actual,
                             const char* msg,
                             const UNITY_LINE_TYPE lineNumber,
                             const UNITY_DISPLAY_STYLE_T style)
@@ -408,16 +399,16 @@ void UnityAssertEqualNumber(const U_SINT expected,
 }
 
 //-----------------------------------------------
-void UnityAssertEqualIntArray(const U_SINT* expected,
-                              const U_SINT* actual,
-                              const UU32 num_elements,
+void UnityAssertEqualIntArray(const _U_SINT* expected,
+                              const _U_SINT* actual,
+                              const _UU32 num_elements,
                               const char* msg,
                               const UNITY_LINE_TYPE lineNumber,
                               const UNITY_DISPLAY_STYLE_T style)
 {
-    UU32 elements = num_elements;
-    const US8* ptr_exp = (US8*)expected;
-    const US8* ptr_act = (US8*)actual;
+    _UU32 elements = num_elements;
+    const _US8* ptr_exp = (_US8*)expected;
+    const _US8* ptr_act = (_US8*)actual;
 
     UNITY_SKIP_EXECUTION;
   
@@ -460,15 +451,15 @@ void UnityAssertEqualIntArray(const U_SINT* expected,
         case UNITY_DISPLAY_STYLE_UINT16:
             while (elements--)
             {
-                if (*(US16*)ptr_exp != *(US16*)ptr_act)
+                if (*(_US16*)ptr_exp != *(_US16*)ptr_act)
                 {
                     UnityTestResultsFailBegin(lineNumber);
                     UnityPrint(UnityStrElement);
                     UnityPrintNumberByStyle((num_elements - elements - 1), UNITY_DISPLAY_STYLE_UINT);
                     UnityPrint(UnityStrExpected);
-                    UnityPrintNumberByStyle(*(US16*)ptr_exp, style);
+                    UnityPrintNumberByStyle(*(_US16*)ptr_exp, style);
                     UnityPrint(UnityStrWas);
-                    UnityPrintNumberByStyle(*(US16*)ptr_act, style);
+                    UnityPrintNumberByStyle(*(_US16*)ptr_act, style);
                     UnityAddMsgIfSpecified(msg);
                     UNITY_FAIL_AND_BAIL;
                 }
@@ -482,15 +473,15 @@ void UnityAssertEqualIntArray(const U_SINT* expected,
         case UNITY_DISPLAY_STYLE_UINT64:
             while (elements--)
             {
-                if (*(US64*)ptr_exp != *(US64*)ptr_act)
+                if (*(_US64*)ptr_exp != *(_US64*)ptr_act)
                 {
                     UnityTestResultsFailBegin(lineNumber);
                     UnityPrint(UnityStrElement);
                     UnityPrintNumberByStyle((num_elements - elements - 1), UNITY_DISPLAY_STYLE_UINT);
                     UnityPrint(UnityStrExpected);
-                    UnityPrintNumberByStyle(*(US64*)ptr_exp, style);
+                    UnityPrintNumberByStyle(*(_US64*)ptr_exp, style);
                     UnityPrint(UnityStrWas);
-                    UnityPrintNumberByStyle(*(US64*)ptr_act, style);
+                    UnityPrintNumberByStyle(*(_US64*)ptr_act, style);
                     UnityAddMsgIfSpecified(msg);
                     UNITY_FAIL_AND_BAIL;
                 }
@@ -502,15 +493,15 @@ void UnityAssertEqualIntArray(const U_SINT* expected,
         default:
             while (elements--)
             {
-                if (*(US32*)ptr_exp != *(US32*)ptr_act)
+                if (*(_US32*)ptr_exp != *(_US32*)ptr_act)
                 {
                     UnityTestResultsFailBegin(lineNumber);
                     UnityPrint(UnityStrElement);
                     UnityPrintNumberByStyle((num_elements - elements - 1), UNITY_DISPLAY_STYLE_UINT);
                     UnityPrint(UnityStrExpected);
-                    UnityPrintNumberByStyle(*(US32*)ptr_exp, style);
+                    UnityPrintNumberByStyle(*(_US32*)ptr_exp, style);
                     UnityPrint(UnityStrWas);
-                    UnityPrintNumberByStyle(*(US32*)ptr_act, style);
+                    UnityPrintNumberByStyle(*(_US32*)ptr_act, style);
                     UnityAddMsgIfSpecified(msg);
                     UNITY_FAIL_AND_BAIL;
                 }
@@ -523,16 +514,16 @@ void UnityAssertEqualIntArray(const U_SINT* expected,
 
 //-----------------------------------------------
 #ifndef UNITY_EXCLUDE_FLOAT
-void UnityAssertEqualFloatArray(const UF* expected,
-                                const UF* actual,
-                                const UU32 num_elements,
+void UnityAssertEqualFloatArray(const _UF* expected,
+                                const _UF* actual,
+                                const _UU32 num_elements,
                                 const char* msg,
                                 const UNITY_LINE_TYPE lineNumber)
 {
-    UU32 elements = num_elements;
-    const UF* ptr_expected = expected;
-    const UF* ptr_actual = actual;
-    UF diff, tol;
+    _UU32 elements = num_elements;
+    const _UF* ptr_expected = expected;
+    const _UF* ptr_actual = actual;
+    _UF diff, tol;
 
     UNITY_SKIP_EXECUTION;
   
@@ -579,14 +570,14 @@ void UnityAssertEqualFloatArray(const UF* expected,
 }
 
 //-----------------------------------------------
-void UnityAssertFloatsWithin(const UF delta,
-                             const UF expected,
-                             const UF actual,
+void UnityAssertFloatsWithin(const _UF delta,
+                             const _UF expected,
+                             const _UF actual,
                              const char* msg,
                              const UNITY_LINE_TYPE lineNumber)
 {
-    UF diff = actual - expected;
-    UF pos_delta = delta;
+    _UF diff = actual - expected;
+    _UF pos_delta = delta;
 
     UNITY_SKIP_EXECUTION;
   
@@ -617,7 +608,7 @@ void UnityAssertFloatsWithin(const UF delta,
 }
 
 //-----------------------------------------------
-void UnityAssertFloatIsInf(const UF actual,
+void UnityAssertFloatIsInf(const _UF actual,
                            const char* msg,
                            const UNITY_LINE_TYPE lineNumber)
 {
@@ -645,7 +636,7 @@ void UnityAssertFloatIsInf(const UF actual,
 }
 
 //-----------------------------------------------
-void UnityAssertFloatIsNegInf(const UF actual,
+void UnityAssertFloatIsNegInf(const _UF actual,
                               const char* msg,
                               const UNITY_LINE_TYPE lineNumber)
 {
@@ -669,7 +660,7 @@ void UnityAssertFloatIsNegInf(const UF actual,
 }
 
 //-----------------------------------------------
-void UnityAssertFloatIsNaN(const UF actual,
+void UnityAssertFloatIsNaN(const _UF actual,
                            const char* msg,
                            const UNITY_LINE_TYPE lineNumber)
 {
@@ -695,16 +686,16 @@ void UnityAssertFloatIsNaN(const UF actual,
 
 //-----------------------------------------------
 #ifndef UNITY_EXCLUDE_DOUBLE
-void UnityAssertEqualDoubleArray(const UD* expected,
-                                 const UD* actual,
-                                 const UU32 num_elements,
+void UnityAssertEqualDoubleArray(const _UD* expected,
+                                 const _UD* actual,
+                                 const _UU32 num_elements,
                                  const char* msg,
                                  const UNITY_LINE_TYPE lineNumber)
 {
-    UU32 elements = num_elements;
-    const UD* ptr_expected = expected;
-    const UD* ptr_actual = actual;
-    UD diff, tol;
+    _UU32 elements = num_elements;
+    const _UD* ptr_expected = expected;
+    const _UD* ptr_actual = actual;
+    _UD diff, tol;
 
     UNITY_SKIP_EXECUTION;
   
@@ -751,14 +742,14 @@ void UnityAssertEqualDoubleArray(const UD* expected,
 }
 
 //-----------------------------------------------
-void UnityAssertDoublesWithin(const UD delta,
-                              const UD expected,
-                              const UD actual,
+void UnityAssertDoublesWithin(const _UD delta,
+                              const _UD expected,
+                              const _UD actual,
                               const char* msg,
                               const UNITY_LINE_TYPE lineNumber)
 {
-    UD diff = actual - expected;
-    UD pos_delta = delta;
+    _UD diff = actual - expected;
+    _UD pos_delta = delta;
 
     UNITY_SKIP_EXECUTION;
   
@@ -789,7 +780,7 @@ void UnityAssertDoublesWithin(const UD delta,
 }
 
 //-----------------------------------------------
-void UnityAssertDoubleIsInf(const UD actual,
+void UnityAssertDoubleIsInf(const _UD actual,
                             const char* msg,
                             const UNITY_LINE_TYPE lineNumber)
 {
@@ -813,7 +804,7 @@ void UnityAssertDoubleIsInf(const UD actual,
 }
 
 //-----------------------------------------------
-void UnityAssertDoubleIsNegInf(const UD actual,
+void UnityAssertDoubleIsNegInf(const _UD actual,
                                const char* msg,
                                const UNITY_LINE_TYPE lineNumber)
 {
@@ -837,7 +828,7 @@ void UnityAssertDoubleIsNegInf(const UD actual,
 }
 
 //-----------------------------------------------
-void UnityAssertDoubleIsNaN(const UD actual,
+void UnityAssertDoubleIsNaN(const _UD actual,
                             const char* msg,
                             const UNITY_LINE_TYPE lineNumber)
 {
@@ -862,9 +853,9 @@ void UnityAssertDoubleIsNaN(const UD actual,
 #endif // not UNITY_EXCLUDE_DOUBLE
 
 //-----------------------------------------------
-void UnityAssertNumbersWithin( const U_SINT delta,
-                               const U_SINT expected,
-                               const U_SINT actual,
+void UnityAssertNumbersWithin( const _U_SINT delta,
+                               const _U_SINT expected,
+                               const _U_SINT actual,
                                const char* msg,
                                const UNITY_LINE_TYPE lineNumber,
                                const UNITY_DISPLAY_STYLE_T style)
@@ -880,10 +871,10 @@ void UnityAssertNumbersWithin( const U_SINT delta,
     }
     else
     {
-        if ((U_UINT)actual > (U_UINT)expected)
-            Unity.CurrentTestFailed = ((U_UINT)(actual - expected) > (U_UINT)delta);
+        if ((_U_UINT)actual > (_U_UINT)expected)
+            Unity.CurrentTestFailed = ((_U_UINT)(actual - expected) > (_U_UINT)delta);
         else
-            Unity.CurrentTestFailed = ((U_UINT)(expected - actual) > (U_UINT)delta);
+            Unity.CurrentTestFailed = ((_U_UINT)(expected - actual) > (_U_UINT)delta);
     }
 
     if (Unity.CurrentTestFailed)
@@ -906,7 +897,7 @@ void UnityAssertEqualString(const char* expected,
                             const char* msg,
                             const UNITY_LINE_TYPE lineNumber)
 {
-    UU32 i;
+    _UU32 i;
 
     UNITY_SKIP_EXECUTION;
   
@@ -942,11 +933,11 @@ void UnityAssertEqualString(const char* expected,
 //-----------------------------------------------
 void UnityAssertEqualStringArray( const char** expected,
                                   const char** actual,
-                                  const UU32 num_elements,
+                                  const _UU32 num_elements,
                                   const char* msg,
                                   const UNITY_LINE_TYPE lineNumber)
 {
-    UU32 i, j = 0;
+    _UU32 i, j = 0;
     
     UNITY_SKIP_EXECUTION;
   
@@ -1002,15 +993,15 @@ void UnityAssertEqualStringArray( const char** expected,
 //-----------------------------------------------
 void UnityAssertEqualMemory( const void* expected,
                              const void* actual,
-                             const UU32 length,
-                             const UU32 num_elements,
+                             const _UU32 length,
+                             const _UU32 num_elements,
                              const char* msg,
                              const UNITY_LINE_TYPE lineNumber)
 {
     unsigned char* ptr_exp = (unsigned char*)expected;
     unsigned char* ptr_act = (unsigned char*)actual;
-    UU32 elements = num_elements;
-    UU32 bytes;
+    _UU32 elements = num_elements;
+    _UU32 bytes;
 
     UNITY_SKIP_EXECUTION;
   

@@ -5,16 +5,13 @@
     [Released under MIT License. Please refer to license.txt for details]
 ========================================== */
 
+#include <string.h>
 #include "unity_fixture.h"
 #include "unity_internals.h"
-
-/* glibc 2.15's string.h includes stdlib.h on x64, messing with Unity's malloc overrides, so declare some string functions here */
-char * strstr( const char *, const char * );
 
 UNITY_FIXTURE_T UnityFixture;
 
 //If you decide to use the function pointer approach.
-int putchar( int );
 int (*outputChar)(int) = putchar;
 
 int verbose = 0;
@@ -115,11 +112,15 @@ void UnityTestRunner(unityfunction* setup,
     }
 }
 
-void UnityIgnoreTest()
+void UnityIgnoreTest(const char * printableName)
 {
     Unity.NumberOfTests++;
     Unity.CurrentTestIgnored = 1;
-    UNITY_OUTPUT_CHAR('!');
+    if (!UnityFixture.Verbose)
+        UNITY_OUTPUT_CHAR('!');
+    else
+        UnityPrint(printableName);
+    UnityConcludeFixtureTest();
 }
 
 
@@ -164,7 +165,7 @@ void UnityMalloc_MakeMallocFailAfterCount(int countdown)
 typedef struct GuardBytes
 {
     size_t size;
-    char guard[sizeof(int)];
+    char guard[sizeof(size_t)];
 } Guard;
 
 
@@ -184,15 +185,12 @@ void * unity_malloc(size_t size)
 
     malloc_count++;
 
-    guard = malloc( size + sizeof(Guard) + strlen( end ) + 1 );
-    if ( guard == NULL ) {
-	    return NULL;
-    }
+    guard = (Guard*)malloc(size + sizeof(Guard) + 4);
     guard->size = size;
     mem = (char*)&(guard[1]);
     memcpy(&mem[size], end, strlen(end) + 1);
 
-    return mem;
+    return (void*)mem;
 }
 
 static int isOverrun(void * mem)
@@ -264,9 +262,9 @@ void* unity_realloc(void * oldMem, size_t size)
 
 //--------------------------------------------------------
 //Automatic pointer restoration functions
-typedef struct PointerPair
+typedef struct _PointerPair
 {
-    struct PointerPair * next;
+    struct _PointerPair * next;
     void ** pointer;
     void * old_value;
 } PointerPair;
@@ -362,6 +360,10 @@ void UnityConcludeFixtureTest()
 {
     if (Unity.CurrentTestIgnored)
     {
+        if (UnityFixture.Verbose)
+        {
+            UNITY_OUTPUT_CHAR('\n');
+        }
         Unity.TestIgnores++;
     }
     else if (!Unity.CurrentTestFailed)
@@ -380,4 +382,3 @@ void UnityConcludeFixtureTest()
     Unity.CurrentTestFailed = 0;
     Unity.CurrentTestIgnored = 0;
 }
-
