@@ -16,9 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#ifndef SML_ATTENTION_RESPONSE_H__
-#define	SML_ATTENTION_RESPONSE_H__
+#ifndef SML_ATTENTION_RESPONSE_H_
+#define	SML_ATTENTION_RESPONSE_H_
 
 #include "sml_shared.h"
 #include "sml_octet_string.h"
@@ -46,5 +45,5 @@ void sml_attention_response_free(sml_attention_response *msg);
 #endif
 
 
-#endif /* SML_ATTENTION_RESPONSE_H__ */
+#endif /* SML_ATTENTION_RESPONSE_H_ */
 

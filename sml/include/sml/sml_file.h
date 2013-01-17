@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_FILE_H__
-#define	SML_FILE_H__
+#ifndef SML_FILE_H_
+#define	SML_FILE_H_
 
 #include "sml_message.h"
 #include "sml_shared.h"
@@ -47,5 +47,5 @@ void sml_file_print(sml_file *file);
 #endif
 
 
-#endif /* SML_FILE_H__ */
+#endif /* SML_FILE_H_ */
 

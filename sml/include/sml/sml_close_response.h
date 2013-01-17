@@ -16,9 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-
-#ifndef SML_CLOSE_RESPONSE_H__
-#define SML_CLOSE_RESPONSE_H__
+#ifndef SML_CLOSE_RESPONSE_H_
+#define SML_CLOSE_RESPONSE_H_
 
 #include "sml_close_request.h"
 
@@ -38,5 +37,5 @@ void sml_close_response_free(sml_close_response *msg);
 #endif
 
 
-#endif /* SML_CLOSE_RESPONSE_H__ */
+#endif /* SML_CLOSE_RESPONSE_H_ */
 

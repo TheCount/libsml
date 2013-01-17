@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_SHARED_H__
-#define	SML_SHARED_H__
+#ifndef SML_SHARED_H_
+#define	SML_SHARED_H_
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -114,5 +114,5 @@ void hexdump(unsigned char *buffer, size_t buffer_len);
 #endif
 
 
-#endif /* SML_SHARED_H__ */
+#endif /* SML_SHARED_H_ */
 

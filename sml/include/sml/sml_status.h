@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_STATUS_H__
-#define	SML_STATUS_H__
+#ifndef SML_STATUS_H_
+#define	SML_STATUS_H_
 
 #include "sml_number.h"
 #include "sml_shared.h"
@@ -46,5 +46,5 @@ void sml_status_free(sml_status *status);
 #endif
 
 
-#endif /* SML_STATUS_H__ */
+#endif /* SML_STATUS_H_ */
 

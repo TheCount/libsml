@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_TREE_H__
-#define	SML_TREE_H__
+#ifndef SML_TREE_H_
+#define	SML_TREE_H_
 
 #include "sml_shared.h"
 #include "sml_octet_string.h"
@@ -136,5 +136,5 @@ void sml_period_entry_free(sml_period_entry *period);
 #endif
 
 
-#endif /* SML_TREE_H__ */
+#endif /* SML_TREE_H_ */
 

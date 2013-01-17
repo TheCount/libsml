@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_GET_LIST_REQUEST_H__
-#define SML_GET_LIST_REQUEST_H__
+#ifndef SML_GET_LIST_REQUEST_H_
+#define SML_GET_LIST_REQUEST_H_
 
 #include "sml_shared.h"
 #include "sml_octet_string.h"
@@ -46,5 +46,5 @@ void sml_get_list_request_free(sml_get_list_request *msg);
 #endif
 
 
-#endif /* SML_GET_LIST_REQUEST_H__ */
+#endif /* SML_GET_LIST_REQUEST_H_ */
 

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_OCTET_STRING_H__
-#define	SML_OCTET_STRING_H__
+#ifndef SML_OCTET_STRING_H_
+#define	SML_OCTET_STRING_H_
 
 #include <string.h>
 #include "sml_shared.h"
@@ -52,5 +52,5 @@ typedef octet_string sml_signature;
 #endif
 
 
-#endif /* SML_OCTET_STRING_H__ */
+#endif /* SML_OCTET_STRING_H_ */
 

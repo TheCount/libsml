@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SML_GET_PROFILE_LIST_REQUEST_H__
-#define SML_GET_PROFILE_LIST_REQUEST_H__
+#ifndef SML_GET_PROFILE_LIST_REQUEST_H_
+#define SML_GET_PROFILE_LIST_REQUEST_H_
 
 #include "sml_get_profile_pack_request.h"
 
@@ -38,5 +38,5 @@ typedef sml_get_profile_pack_request sml_get_profile_list_request;
 #endif
 
 
-#endif /* SML_GET_PROFILE_LIST_REQUEST_H__ */
+#endif /* SML_GET_PROFILE_LIST_REQUEST_H_ */
 
