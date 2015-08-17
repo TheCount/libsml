@@ -19,6 +19,7 @@
 #ifndef SML_TREE_H_
 #define	SML_TREE_H_
 
+#include "sml_list.h"
 #include "sml_shared.h"
 #include "sml_octet_string.h"
 #include "sml_value.h"
@@ -32,6 +33,7 @@ extern "C" {
 #define SML_PROC_PAR_VALUE_TAG_PERIOD_ENTRY 	0x02
 #define SML_PROC_PAR_VALUE_TAG_TUPEL_ENTRY 	0x03
 #define SML_PROC_PAR_VALUE_TAG_TIME		0x04
+#define SML_PROC_PAR_VALUE_TAG_LIST_ENTRY	0x05
 
 // what a messy tupel ...
 typedef struct {
@@ -83,6 +85,7 @@ typedef struct {
 		sml_period_entry *period_entry;
 		sml_tupel_entry *tupel_entry;
 		sml_time *time;
+		sml_list * list_entry;
 	} data;
 } sml_proc_par_value;
 

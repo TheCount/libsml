@@ -17,6 +17,7 @@
 // along with libSML.  If not, see <http://www.gnu.org/licenses/>.
 
 
+#include <sml/sml_list.h>
 #include <sml/sml_tree.h>
 #include <sml/sml_value.h>
 #include <stdio.h>
@@ -254,6 +255,9 @@ sml_proc_par_value *sml_proc_par_value_parse(sml_buffer *buf) {
 		case SML_PROC_PAR_VALUE_TAG_TIME:
 			ppv->data.time = sml_time_parse(buf);
 			break;
+		case SML_PROC_PAR_VALUE_TAG_LIST_ENTRY:
+			ppv->data.list_entry = sml_list_entry_parse( buf );
+			break;
 		default:
 			buf->error = 1;
 			goto error;
@@ -288,6 +292,9 @@ void sml_proc_par_value_write(sml_proc_par_value *value, sml_buffer *buf) {
 		case SML_PROC_PAR_VALUE_TAG_TIME:
 			sml_time_write(value->data.time, buf);
 			break;
+		case SML_PROC_PAR_VALUE_TAG_LIST_ENTRY:
+			sml_list_write( value->data.list_entry, buf );
+			break;
 		default:
 			printf("error: unknown tag in %s\n", __FUNCTION__);
 	}
@@ -308,6 +315,9 @@ void sml_proc_par_value_free(sml_proc_par_value *ppv) {
 					break;
 				case SML_PROC_PAR_VALUE_TAG_TIME:
 					sml_time_free(ppv->data.time);
+					break;
+				case SML_PROC_PAR_VALUE_TAG_LIST_ENTRY:
+					sml_list_free( ppv->data.list_entry );
 					break;
 				default:
 					if (ppv->data.value) {
