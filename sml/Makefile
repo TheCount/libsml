@@ -9,7 +9,7 @@ LIBS=-luuid
 endif
 
 NAME=libsml
-SOVERSION=1
+SOVERSION=2
 SONAME=$(NAME).so.$(SOVERSION)
 
 LIB_DIR=./lib

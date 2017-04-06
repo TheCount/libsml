@@ -2,7 +2,7 @@
 /.pc/
 /debian/debhelper-build-stamp
 /debian/files
-/debian/libsml1/
+/debian/libsml2/
 /debian/libsml-dev/
 /debian/*.debhelper*
 /debian/*.substvars

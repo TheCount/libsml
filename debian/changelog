@@ -1,3 +1,10 @@
+libsml (0.2.0) unstable; urgency=medium
+
+  * Fork of original libsml for specific use
+  * Bumped SOVERSION due to ABI changes
+
+ -- Alexander Klauer <Alexander.Klauer@itwm.fraunhofer.de>  Thu, 06 Apr 2017 11:08:49 +0000
+
 libsml (0.1.1-1~wip) unstable; urgency=low
 
   * Added sml_value_to_double()

@@ -11,12 +11,12 @@ Vcs-Browser: http://github.com/dailab/libsml
 Package: libsml-dev
 Section: libdevel
 Architecture: any
-Depends: libsml1 (= ${binary:Version}), uuid-dev (>= 2.16), ${misc:Depends}
+Depends: libsml2 (= ${binary:Version}), uuid-dev (>= 2.16), ${misc:Depends}
 Description: Header files for libSML
  This package includes header include files
  and an example for libSML
 
-Package: libsml1
+Package: libsml2
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
