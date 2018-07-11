@@ -23,6 +23,7 @@
 #include "sml_octet_string.h"
 #include "sml_number.h"
 #include "sml_boolean.h"
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,6 +53,10 @@ void sml_value_free(sml_value *value);
 // Cast arbitrary sized sml_value to double
 double sml_value_to_double(sml_value *value);
 
+// Cast sml_value to hex string
+char *sml_value_to_strhex(sml_value *value, char **result, bool mixed);
+octet_string *sml_value_to_octet_str(sml_value *value);
+u8 sml_value_get_type(sml_value *value);
 #ifdef __cplusplus
 }
 #endif

@@ -209,3 +209,10 @@ void sml_time_free(sml_time *tme) {
         free(tme);
     }
 }
+
+u32 sml_time_get_timestamp(sml_time *time) {
+	if (!time->data.timestamp) {
+		return 0;
+	}
+	return *(time->data.timestamp);
+}

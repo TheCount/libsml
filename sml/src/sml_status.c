@@ -78,3 +78,7 @@ void sml_status_free(sml_status *status) {
 	}
 }
 
+u32 sml_status_get(sml_status *status) {
+	return *(status->data.status32);
+}
+

@@ -126,3 +126,17 @@ double sml_value_to_double(sml_value *value) {
 	}
 }
 
+octet_string *sml_value_to_octet_str(sml_value *value) {
+	if (value) {
+		if (value->type == SML_TYPE_OCTET_STRING) {
+			if (value->data.bytes)
+			return value->data.bytes;
+		}
+	}
+
+	return NULL;
+}
+
+u8 sml_value_get_type(sml_value *value) {
+	return value->type;
+}
