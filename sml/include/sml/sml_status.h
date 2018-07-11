@@ -40,6 +40,7 @@ sml_status *sml_status_init();
 sml_status *sml_status_parse(sml_buffer *buf);
 void sml_status_write(sml_status *status, sml_buffer *buf);
 void sml_status_free(sml_status *status);
+u32 sml_status_get(sml_status *status);
 
 #ifdef __cplusplus
 }
