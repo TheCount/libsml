@@ -54,10 +54,10 @@ libsml: $(ST_LIB) $(OBJ_LIB)
 endif
 
 $(DYN_LIB): $(OBJS)
-	$(LD) $(LIBS) -shared -soname $(SONAME) -o $@ $^
+	$(LD) $(LDFLAGS) $(LIBS) -shared -soname $(SONAME) -o $@ $^
 
 $(OBJ_LIB): $(OBJS)
-	$(LD) -r -o $@ $^
+	$(LD) $(LDFLAGS) -r -o $@ $^
 
 $(ST_LIB): $(OBJS)
 	$(AR) -rs $@ $^
